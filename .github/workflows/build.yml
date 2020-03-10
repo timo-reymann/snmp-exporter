@@ -28,7 +28,7 @@ jobs:
         name: Docker login
         run: docker login --username timoreymann --password ${{ secrets.DOCKER_PASSWORD }}
       -
-        name: Run Buildx arm
+        name: Run Buildx arm64v8
         run: |
           docker buildx build \
             --platform linux/arm64 \
@@ -36,6 +36,15 @@ jobs:
             . \
             -t timoreymann/snmp_exporter:${{ steps.tagName.outputs.tag }}-arm64v8 \
             -t timoreymann/snmp_exporter:latest-arm64v8
+      -
+        name: Run Buildx arm32v7
+        run: |
+          docker buildx build \
+            --platform linux/arm/v7 \
+            --output "type=image,push=true" \
+            . \
+            -t timoreymann/snmp_exporter:${{ steps.tagName.outputs.tag }}-arm32v7 \
+            -t timoreymann/snmp_exporter:latest-arm32v7
       -
         name: Run Buildx amd
         run: |
